@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    body{
+        background: linear-gradient(135deg,#4f46e5,#06b6d4);
+    }
+
+    .login-card{
+        border:none;
+        border-radius:20px;
+        overflow:hidden;
+        box-shadow:0 15px 35px rgba(0,0,0,.2);
+    }
+
+    .left-side{
+        background:linear-gradient(135deg,#2563eb,#3b82f6);
+        color:white;
+        padding:50px 40px;
+        height:100%;
+    }
+
+    .left-side h1{
+        font-weight:700;
+    }
+
+    .left-side p{
+        opacity:.9;
+        margin-top:20px;
+    }
+
+    .right-side{
+        background:white;
+        padding:50px;
+    }
+
+    .form-control{
+        border-radius:10px;
+        padding:12px;
+    }
+
+    .btn-login{
+        background:#2563eb;
+        color:white;
+        border-radius:10px;
+        padding:12px;
+        font-weight:600;
+        transition:.3s;
+    }
+
+    .btn-login:hover{
+        background:#1d4ed8;
+        color:white;
+    }
+
+    @media(max-width:768px){
+        .left-side{
+            display:none;
+        }
+    }
+</style>
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-10">
+
+            <div class="card login-card">
+
+                <div class="row g-0">
+
+                    <!-- Left  -->
+
+                    <div class="col-md-5">
+
+                        <div class="left-side d-flex flex-column justify-content-center align-items-center text-center">
+
+                            <h1>Welcome !</h1>
+
+                            <p>
+                                Sign in to manage your tasks,
+                                stay organized and boost your productivity.
+                            </p>
+
+                            <img src="https://cdn-icons-png.flaticon.com/512/10009/10009135.png"
+                                 class="img-fluid mt-4"
+                                 width="220">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Right  -->
+
+                    <div class="col-md-7">
+
+                        <div class="right-side">
+
+                            <h2 class="fw-bold text-primary mb-2">
+                                Login
+                            </h2>
+
+                            <p class="text-muted mb-4">
+                                Enter your credentials to continue
+                            </p>
+
+                            <form method="POST">
+
+                                {% csrf_token %}
+
+                                {% for field in form %}
+
+                                <div class="mb-3">
+
+                                    <label class="form-label fw-semibold">
+                                        {{ field.label }}
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% if field.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ field.errors }}
+                                    </div>
+                                    {% endif %}
+
+                                </div>
+
+                                {% endfor %}
+
+                                <div class="d-grid mt-4">
+
+                                    <button type="submit" class="btn btn-login">
+
+                                        Login
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                            <hr>
+
+                            <p class="text-center mb-0">
+
+                                Don't have an account?
+
+                                <a href="{% url 'register' %}"
+                                   class="fw-bold text-decoration-none">
+
+                                    Register
+
+                                </a>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
