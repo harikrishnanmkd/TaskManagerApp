@@ -2,39 +2,126 @@
 
 {% block content %}
 
-<div class="card">
+<style>
+    body{
+        background: linear-gradient(135deg,#4f46e5,#06b6d4);
+    }
 
-<div class="card-header">
+    .task-card{
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,.2);
+    }
 
-<h3>Task</h3>
+    .card-header{
+        background: linear-gradient(135deg,#2563eb,#3b82f6);
+        color: white;
+        border-top-left-radius: 20px !important;
+        border-top-right-radius: 20px !important;
+        padding: 20px;
+    }
 
-</div>
+    .card-body{
+        padding: 35px;
+    }
 
-<div class="card-body">
+    .form-control,
+    .form-select,
+    textarea{
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 5px;
+    }
 
-<form method="POST">
+    .btn-save{
+        background:#2563eb;
+        color:white;
+        border:none;
+        border-radius:10px;
+        padding:12px 25px;
+        font-weight:600;
+    }
 
-{% csrf_token %}
+    .btn-save:hover{
+        background:#1d4ed8;
+        color:white;
+    }
 
-{{form.as_p}}
+    .btn-cancel{
+        border-radius:10px;
+        padding:12px 25px;
+    }
+</style>
 
-<button class="btn btn-success">
+<div class="container py-5">
 
-Save
+    <div class="row justify-content-center">
 
-</button>
+        <div class="col-md-8 col-lg-6">
 
-<a href="{% url 'dashboard' %}"
+            <div class="card task-card">
 
-class="btn btn-secondary">
+                <div class="card-header text-center">
 
-Cancel
+                    <h3 class="mb-0">
+                        {% if form.instance.pk %}
+                         Edit Task
+                        {% else %}
+                            Add New Task
+                        {% endif %}
+                    </h3>
 
-</a>
+                </div>
 
-</form>
+                <div class="card-body">
 
-</div>
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        {% for field in form %}
+
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        {% endfor %}
+
+                        <div class="d-flex justify-content-between mt-4">
+
+                            <a href="{% url 'dashboard' %}"
+                               class="btn btn-outline-secondary btn-cancel">
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-save">
+                                Save 
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
