@@ -3,121 +3,147 @@
 {% block content %}
 
 <style>
-    body{
-        background: linear-gradient(135deg,#4f46e5,#06b6d4);
-    }
 
-    .task-card{
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0,0,0,.2);
-    }
+body{
+    background: linear-gradient(135deg,#0f172a,#2563eb,#06b6d4);
+    min-height:100vh;
+}
 
-    .card-header{
-        background: linear-gradient(135deg,#2563eb,#3b82f6);
-        color: white;
-        border-top-left-radius: 20px !important;
-        border-top-right-radius: 20px !important;
-        padding: 20px;
-    }
+.task-container{
+    min-height:85vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
-    .card-body{
-        padding: 35px;
-    }
+.task-card{
+    width:100%;
+    max-width:650px;
+    background:rgba(255,255,255,.95);
+    border-radius:20px;
+    box-shadow:0 20px 45px rgba(0,0,0,.2);
+    overflow:hidden;
+}
 
-    .form-control,
-    .form-select,
-    textarea{
-        border-radius: 10px;
-        padding: 12px;
-        margin-top: 5px;
-    }
+.task-header{
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    padding:25px;
+    text-align:center;
+}
 
-    .btn-save{
-        background:#2563eb;
-        color:white;
-        border:none;
-        border-radius:10px;
-        padding:12px 25px;
-        font-weight:600;
-    }
+.task-header h2{
+    margin:0;
+    font-weight:700;
+}
 
-    .btn-save:hover{
-        background:#1d4ed8;
-        color:white;
-    }
+.task-body{
+    padding:35px;
+}
 
-    .btn-cancel{
-        border-radius:10px;
-        padding:12px 25px;
-    }
+.form-label{
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.form-control{
+    height:50px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+}
+
+textarea.form-control{
+    height:120px;
+    resize:none;
+}
+
+.form-control:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 .15rem rgba(37,99,235,.25);
+}
+
+.btn-save{
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:12px 30px;
+    font-weight:600;
+}
+
+.btn-save:hover{
+    background:#1d4ed8;
+    color:white;
+}
+
+.btn-cancel{
+    border-radius:10px;
+    padding:12px 30px;
+}
+
 </style>
 
-<div class="container py-5">
+<div class="container task-container">
 
-    <div class="row justify-content-center">
+    <div class="task-card">
 
-        <div class="col-md-8 col-lg-6">
+        <div class="task-header">
 
-            <div class="card task-card">
+            {% if form.instance.pk %}
+                <h2>Edit Task</h2>
+                <p class="mb-0">Update your task details</p>
+            {% else %}
+                <h2>Add New Task</h2>
+                <p class="mb-0">Create a new task to stay organized</p>
+            {% endif %}
 
-                <div class="card-header text-center">
+        </div>
 
-                    <h3 class="mb-0">
-                        {% if form.instance.pk %}
-                         Edit Task
-                        {% else %}
-                            Add New Task
-                        {% endif %}
-                    </h3>
+        <div class="task-body">
 
-                </div>
+            <form method="POST">
 
-                <div class="card-body">
+                {% csrf_token %}
 
-                    <form method="POST">
+                {% for field in form %}
 
-                        {% csrf_token %}
+                <div class="mb-4">
 
-                        {% for field in form %}
+                    <label class="form-label">
+                        {{ field.label }}
+                    </label>
 
-                            <div class="mb-3">
+                    {{ field }}
 
-                                <label class="form-label fw-semibold">
-                                    {{ field.label }}
-                                </label>
-
-                                {{ field }}
-
-                                {% if field.errors %}
-                                    <div class="text-danger small mt-1">
-                                        {{ field.errors }}
-                                    </div>
-                                {% endif %}
-
-                            </div>
-
-                        {% endfor %}
-
-                        <div class="d-flex justify-content-between mt-4">
-
-                            <a href="{% url 'dashboard' %}"
-                               class="btn btn-outline-secondary btn-cancel">
-                                Cancel
-                            </a>
-
-                            <button type="submit"
-                                    class="btn btn-save">
-                                Save 
-                            </button>
-
+                    {% if field.errors %}
+                        <div class="text-danger mt-2">
+                            {{ field.errors }}
                         </div>
-
-                    </form>
+                    {% endif %}
 
                 </div>
 
-            </div>
+                {% endfor %}
+
+                <div class="d-flex justify-content-end gap-3">
+
+                    <a href="{% url 'dashboard' %}"
+                       class="btn btn-outline-secondary btn-cancel">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-save">
+                        {% if form.instance.pk %}
+                            Update Task
+                        {% else %}
+                            Save Task
+                        {% endif %}
+                    </button>
+
+                </div>
+
+            </form>
 
         </div>
 

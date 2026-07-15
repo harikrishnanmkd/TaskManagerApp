@@ -17,6 +17,5 @@ class TaskForm(forms.ModelForm):
 
         self.fields['description'].widget.attrs.update({
             'class': 'form-control',
-            'placeholder': 'Enter task description',
-            'rows': 4
+            'placeholder': 'Describe your task'
         })
